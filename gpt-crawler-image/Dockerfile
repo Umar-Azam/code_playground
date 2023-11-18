@@ -22,7 +22,7 @@ RUN echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesourc
     sudo apt-get update && \
     sudo apt-get install nodejs -y
 
-# Install 
+# Install gpt-crawler
 RUN cd /home && git clone https://github.com/builderio/gpt-crawler && cd gpt-crawler && \
     npm i && \
     npx playwright install && \
