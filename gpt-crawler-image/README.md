@@ -4,5 +4,9 @@ Built from repository at https://github.com/BuilderIO/gpt-crawler/tree/main
 Tested one codespaces on the main-noGPU branch for devcontainer repo https://github.com/Umar-Azam/sim-devcontainer
 All dependencies set up and configured in the Dockerfile. 
 Instructions to run. 
-1. ```sh cd gpt-crawler-image ```
-2. ```sh . ./run.sh ```
+```sh 
+cd gpt-crawler-image 
+```
+```sh
+ . ./run.sh 
+ ```
