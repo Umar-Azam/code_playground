@@ -16,4 +16,3 @@ Instructions to run.
 
 1. ``` cd gpt-crawler-image  ```
 2. ``` . ./run.sh  ```
-3. ``` npm start  ```
