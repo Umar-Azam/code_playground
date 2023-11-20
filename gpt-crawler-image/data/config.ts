@@ -23,9 +23,9 @@ type Config = {
 };
 
 export const config: Config = {
-  url: "https://www.builder.io/c/docs/developers",
-  match: "https://www.builder.io/c/docs/**",
-  selector: `.docs-builder-container`,
+  url: "https://docs.ros.org/en/humble/",
+  match: "https://docs.ros.org/en/humble/Tutorials/**",
+  selector: `.wy-nav-content`,
   maxPagesToCrawl: 10,
   outputFileName: "../data/output.json",
 };
