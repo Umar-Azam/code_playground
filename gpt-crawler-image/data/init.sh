@@ -6,6 +6,6 @@ cp /home/data/config.ts /home/gpt-crawler/
 # start the crawler
 cd /home/gpt-crawler && npm start
 
-# Print after crawling and exit
-echo "Crawling complete. Exiting container..."
+# Print message after crawling and exit
+echo "Crawling complete.."
 exit
