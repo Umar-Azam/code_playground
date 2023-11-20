@@ -1,4 +1,4 @@
 #!/bin/bash
 
 # copy the config when starting the container
-cp ./config.ts /home/gpt-crawler/
+cp /home/data/config.ts /home/gpt-crawler/
