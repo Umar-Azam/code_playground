@@ -6,27 +6,6 @@ import queue
 import time
 
 
-# %%
-
-def generate_config(url : str, match : str, num_pages : int) :
-    return (f'''import {{ Config }} from "./src/config";
-
-export const defaultConfig: Config = {{
-  url: "{url}",
-  match: "{match}",
-  maxPagesToCrawl: {num_pages},
-  outputFileName: "../data/output.json",
-}};''')
-
-# Example url : https://www.builder.io/c/docs/developers
-# Example match : https://www.builder.io/c/docs/**
-
-with open('./crawler/data/testconfig.ts','w') as file:
-    file.write(generate_config('123','345',10))
-
-# %%
-
-
 class BashInterface:
     def __init__(self):
         self.process = subprocess.Popen(
@@ -37,6 +16,7 @@ class BashInterface:
             text=True )
         
         self.output_queue = queue.Queue()
+        self.read_available = False
         self.io_thread = threading.Thread(target=self._io_loop)
         self.running = True
         self.io_thread.start()
@@ -52,16 +32,19 @@ class BashInterface:
     def write_command(self, command):
         if self.process.poll() is not None:
             raise Exception("Bash process has terminated")
-        self.process.stdin.write(command + '\n')
+        self.process.stdin.write(command + '&& echo pybash_success || echo pybash_fail \n')
         self.process.stdin.flush()
 
     def read_output(self):
         try:
+            if (not self.read_available):
+                raise Exception("No data available to read")
+            self.read_available = False
             output = []
             while (self.output_queue.qsize() != 0):
                 output.append(self.output_queue.get())
             return output
-        except queue.Empty:
+        except Exception as e:
             return None
 
     def _io_loop(self):
@@ -69,31 +52,37 @@ class BashInterface:
             output = self.process.stdout.readline()
             if output:
                 self.output_queue.put(output)
+                if ('pybash_success' in output) or ('pybash_fail' in output):
+                    print("Successfully_read")
+                    self.read_available = True
             else:
                 break
 
+
+## TO DO : Add timeout decorator for commands
 
 # %%
 if __name__ == "__main__":
     bash_interface = BashInterface()
 
     try:
-        
+        command_handover = False
         while True:
-            input_cmd  = input("Input CMD :")
-            if input_cmd:
-                if (input_cmd == 'exit'):
-                    break
-                bash_interface.write_command(input_cmd)
+            if (not command_handover):
+                input_cmd  = input("Input CMD :")
+                command_handover = True
+                if input_cmd:
+                    if (input_cmd == 'exit'):
+                        break
+                    bash_interface.write_command(input_cmd)
 
-            time.sleep(0.1)
+            time.sleep(0.01)
 
             output = bash_interface.read_output()
             if output:
+                command_handover = False
                 print(output)
     finally:
         del bash_interface
-
-# %%
 
 # %%
