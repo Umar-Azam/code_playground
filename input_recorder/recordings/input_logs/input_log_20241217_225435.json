@@ -1,0 +1,241 @@
+{
+  "startTime": 1734494047321,
+  "endTime": 1734494075253,
+  "events": [
+    {
+      "type": "click",
+      "timestamp": 0,
+      "x": 697,
+      "y": 132,
+      "target": "button#startBtn.bg-blue-500.text-white.px-4.py-2.rounded.hover:bg-blue-600.hidden"
+    },
+    {
+      "type": "click",
+      "timestamp": 1439,
+      "x": 375,
+      "y": 363,
+      "target": "div.container.mx-auto.px-4.py-8"
+    },
+    {
+      "type": "click",
+      "timestamp": 2273,
+      "x": 552,
+      "y": 543,
+      "target": "div.container.mx-auto.px-4.py-8"
+    },
+    {
+      "type": "click",
+      "timestamp": 14879,
+      "x": 1727,
+      "y": 91,
+      "target": "div.container.mx-auto.px-4.py-8"
+    },
+    {
+      "type": "click",
+      "timestamp": 17802,
+      "x": 1477,
+      "y": 169,
+      "target": "div.container.mx-auto.px-4.py-8"
+    },
+    {
+      "type": "keydown",
+      "timestamp": 20032,
+      "key": "h",
+      "code": "KeyH",
+      "target": "body.bg-gray-100"
+    },
+    {
+      "type": "keydown",
+      "timestamp": 20146,
+      "key": "e",
+      "code": "KeyE",
+      "target": "body.bg-gray-100"
+    },
+    {
+      "type": "keydown",
+      "timestamp": 20308,
+      "key": "l",
+      "code": "KeyL",
+      "target": "body.bg-gray-100"
+    },
+    {
+      "type": "keydown",
+      "timestamp": 20471,
+      "key": "l",
+      "code": "KeyL",
+      "target": "body.bg-gray-100"
+    },
+    {
+      "type": "keydown",
+      "timestamp": 20659,
+      "key": "o",
+      "code": "KeyO",
+      "target": "body.bg-gray-100"
+    },
+    {
+      "type": "keydown",
+      "timestamp": 20712,
+      "key": " ",
+      "code": "Space",
+      "target": "body.bg-gray-100"
+    },
+    {
+      "type": "keydown",
+      "timestamp": 20956,
+      "key": "m",
+      "code": "KeyM",
+      "target": "body.bg-gray-100"
+    },
+    {
+      "type": "keydown",
+      "timestamp": 21042,
+      "key": "y",
+      "code": "KeyY",
+      "target": "body.bg-gray-100"
+    },
+    {
+      "type": "keydown",
+      "timestamp": 21156,
+      "key": " ",
+      "code": "Space",
+      "target": "body.bg-gray-100"
+    },
+    {
+      "type": "keydown",
+      "timestamp": 21293,
+      "key": "n",
+      "code": "KeyN",
+      "target": "body.bg-gray-100"
+    },
+    {
+      "type": "keydown",
+      "timestamp": 21360,
+      "key": "a",
+      "code": "KeyA",
+      "target": "body.bg-gray-100"
+    },
+    {
+      "type": "keydown",
+      "timestamp": 21510,
+      "key": "m",
+      "code": "KeyM",
+      "target": "body.bg-gray-100"
+    },
+    {
+      "type": "keydown",
+      "timestamp": 21559,
+      "key": "e",
+      "code": "KeyE",
+      "target": "body.bg-gray-100"
+    },
+    {
+      "type": "keydown",
+      "timestamp": 21658,
+      "key": " ",
+      "code": "Space",
+      "target": "body.bg-gray-100"
+    },
+    {
+      "type": "keydown",
+      "timestamp": 21763,
+      "key": "i",
+      "code": "KeyI",
+      "target": "body.bg-gray-100"
+    },
+    {
+      "type": "keydown",
+      "timestamp": 21849,
+      "key": "s",
+      "code": "KeyS",
+      "target": "body.bg-gray-100"
+    },
+    {
+      "type": "keydown",
+      "timestamp": 21937,
+      "key": " ",
+      "code": "Space",
+      "target": "body.bg-gray-100"
+    },
+    {
+      "type": "keydown",
+      "timestamp": 22111,
+      "key": "u",
+      "code": "KeyU",
+      "target": "body.bg-gray-100"
+    },
+    {
+      "type": "keydown",
+      "timestamp": 22450,
+      "key": "Backspace",
+      "code": "Backspace",
+      "target": "body.bg-gray-100"
+    },
+    {
+      "type": "keydown",
+      "timestamp": 22699,
+      "key": "U",
+      "code": "KeyU",
+      "target": "body.bg-gray-100"
+    },
+    {
+      "type": "keydown",
+      "timestamp": 22926,
+      "key": "m",
+      "code": "KeyM",
+      "target": "body.bg-gray-100"
+    },
+    {
+      "type": "keydown",
+      "timestamp": 23024,
+      "key": "a",
+      "code": "KeyA",
+      "target": "body.bg-gray-100"
+    },
+    {
+      "type": "keydown",
+      "timestamp": 23166,
+      "key": "r",
+      "code": "KeyR",
+      "target": "body.bg-gray-100"
+    },
+    {
+      "type": "keydown",
+      "timestamp": 23248,
+      "key": " ",
+      "code": "Space",
+      "target": "body.bg-gray-100"
+    },
+    {
+      "type": "keydown",
+      "timestamp": 23799,
+      "key": "A",
+      "code": "KeyA",
+      "target": "body.bg-gray-100"
+    },
+    {
+      "type": "keydown",
+      "timestamp": 23983,
+      "key": "z",
+      "code": "KeyZ",
+      "target": "body.bg-gray-100"
+    },
+    {
+      "type": "keydown",
+      "timestamp": 24054,
+      "key": "a",
+      "code": "KeyA",
+      "target": "body.bg-gray-100"
+    },
+    {
+      "type": "keydown",
+      "timestamp": 24155,
+      "key": "m",
+      "code": "KeyM",
+      "target": "body.bg-gray-100"
+    }
+  ],
+  "stats": {
+    "clicks": 5,
+    "keys": 28
+  }
+}

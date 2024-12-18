@@ -1,0 +1,18 @@
+.hidden {
+    display: none;
+}
+
+#eventLog {
+    font-family: monospace;
+    white-space: pre-wrap;
+}
+
+#eventLog div {
+    padding: 2px 0;
+    border-bottom: 1px solid #eee;
+}
+
+#eventLog div:first-child {
+    color: #2563eb;
+    font-weight: bold;
+}
