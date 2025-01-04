@@ -1,0 +1,23 @@
+erdos renye phase transition dynamics in work environment information flows with 
+human agent collaboration.
+
+Observation of phase transition dynamics based on workflows as tasks are offloaded from 
+humans to agents. 
+
+1. variable node hopping. 
+2. percentage of work agents can do for people
+3. distribution of tasks difficulties and time consumption
+4. human to agent information flow modeling
+-a. Task completion requires input from other people. intermittently available  
+-b. Task completion requires manual input of time and effort. 
+5. agent to agent information flow modeling. 
+
+
+draw graph -> Human given task -> completes it
+ -> human given task portion of task agent can do, validate afterwards.
+ -> Process of agent improving over time for a given task. 
+
+all the probabilities involved
+probability of having an agent
+probability agent can solve the tasks conditioned on the task category 
+learning dynamics probability.
