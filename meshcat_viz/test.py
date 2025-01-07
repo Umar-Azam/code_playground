@@ -59,6 +59,7 @@ def frame_generator(input_visualizer : meshcat.Visualizer, input_frame_name : st
 
 # Create a frame in the visualizer
 vis = frame_generator(vis, "axes")
+vis = frame_generator(vis, "axes2")
 
 # Create an animation that moves the frame "axes" to the SE(3) transformation T
 # Create an animation
@@ -71,14 +72,9 @@ with anim.at_frame(vis, 0) as frame:
 # Set final frame (frame 30) to target transform T
 with anim.at_frame(vis, 30) as frame:
     frame["axes"].set_transform(T)
-
-vis = frame_generator(vis, "axes2")
-
-with anim.at_frame(vis, 30) as frame:
-    frame["axes"].set_transform(T)
     frame["axes2"].set_transform(np.eye(4))
 
-# Set final frame (frame 30) to target transform T
+# Set final frame (frame 60) to target transform T
 with anim.at_frame(vis, 60) as frame:
     frame["axes"].set_transform(T @ T)
     frame["axes2"].set_transform(T)
@@ -94,6 +90,10 @@ vis["sphere"].set_object(sphere, g.MeshLambertMaterial(color=0xff0000))
 T_sphere = np.eye(4)
 T_sphere[:3,3] = [1, 0, 0]
 print(T_sphere)
+test = np.eye(4)
+test[:3,:3] = np.random.rand(3,3)
+print(test)
+print(test.T)
 vis["sphere"].set_transform(T_sphere)
 
 
