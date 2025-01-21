@@ -79,6 +79,8 @@ with anim.at_frame(vis, 60) as frame:
     frame["axes"].set_transform(T @ T)
     frame["axes2"].set_transform(T)
 
+#anim.at_frame(vis, 90)["axes"].set_transform(T @ T @ T)
+
 # Send the animation to the visualizer
 # Play it once with default settings
 vis.set_animation(anim)
