@@ -20,9 +20,10 @@ class FrameNode:
                         raise ValueError('Frame with the same name already exists')
                 return id
             except Exception as e:
-                print(f'{e}\nFrame with the same name already exists : {id}')
-                if (id[-1].isdigit()):
-                    id = id[:-1] + str(int(id[-1]) + 1)
+                print(f'{e} : {id}')
+                if (id.split('_')[-1].isdigit()):
+                    offset = id.rfind('_')
+                    id = id[:offset+1] + str(int(id.split('_')[-1]) + 1)
                 else:
                     id += '_0'
                 return node_id_check(node, id)
@@ -32,11 +33,12 @@ class FrameNode:
         temp_node.parent = self
         self.children.append(temp_node)
 
+    def add_object(self, object):
+        self.object = object
+        # Add meshcat object here
+
     def get_parent(self):
-        if (self.parent == None):
-            return None
-        else:
-            return self.parent
+        return self.parent
         
     def print_tree(self):
         
@@ -62,20 +64,12 @@ class WorldScene:
     def __init__(self, vis : meshcat.Visualizer):
         self.vis = vis
         self.FrameTree = FrameNode()
+        self.vis.open()
 
     def add_frame(self, frame_node: FrameNode):
-        self.frames[frame_node.frame_id] = frame_node
-        self.update_visualization(frame_node)
-
-    def update_visualization(self, frame_node: FrameNode):
-        if frame_node.parent is None:
-            self.vis[frame_node.frame_id].set_transform(frame_node.orientation)
-        else:
-            parent_transform = self.vis[frame_node.parent.frame_id].get_transform()
-            self.vis[frame_node.frame_id].set_transform(parent_transform @ frame_node.orientation)
-
-        for child in frame_node.children:
-            self.update_visualization(child)
-
-    def display(self):
-        self.vis.open()
+        return self.FrameTree.add_child(frame_node)
+    
+    def animation(self):
+        # Build frame by frame animation
+        # Frame by Frame animation of entire tree, sparse input with checkpoints
+        pass

@@ -85,11 +85,11 @@ def matrix_logarithm(rot_mat : np.ndarray) -> np.ndarray:
 
 
 # Method to generate an element of the Lie group SE(3)
-def element_SE3(w, p):
+def element_SE3(w, p, coord_type='exponential') -> np.ndarray:
   theta_x,theta_y,theta_z = w
   x,y,z = p
   se3mat = np.eye(4)
-  se3mat[:3,:3] = rotation_matrix([theta_x, theta_y, theta_z], coord_type='euler')
+  se3mat[:3,:3] = rotation_matrix([theta_x, theta_y, theta_z], coord_type=coord_type)
   se3mat[:3,3] = np.array([x,y,z])
   return se3mat
 
