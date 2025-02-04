@@ -56,20 +56,11 @@ class graph:
             print('Node does not exist')
             return None
         
-        # def path_finder(this_graph, node_id1, node_id2, path = []):
-        #     if node_id1 == node_id2:
-        #         return path + [node_id1]
-        #     path.append(node_id1)
-        #     print(f'neighbour : {this_graph.get_node_neighbours(node_id1)}')
-        #     for neighbour in this_graph.get_node_neighbours(node_id1):
-        #         print(f'path : {path}\nneighbour : {neighbour}')
-        #         if neighbour not in path:
-        #             return path_finder(this_graph, neighbour, node_id2, path)
         def path_finder(this_graph, node_id1, node_id2, path = []):
             if node_id1 == node_id2:
                 return path + [node_id1]
             path.append(node_id1)
-            
+
             for neighbour in this_graph.get_node_neighbours(node_id1):
                 if neighbour not in path:
 
