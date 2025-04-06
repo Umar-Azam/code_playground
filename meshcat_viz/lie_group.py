@@ -1,5 +1,4 @@
 import numpy as np
-import sympy as sp
 
 
 # Method to generate a rotation matrix element of SO(3)
@@ -80,10 +79,15 @@ def matrix_so3_logarithm(rot_mat : np.ndarray) -> np.ndarray:
   if np.isclose(theta, 0):
     return np.zeros((3,3))
   
-  # Edge case for if the angle is pi
+  # Edge case for if the angle is +-pi
   if np.isclose(theta, np.pi) or np.isclose(theta, -np.pi):
-    w = np.array([np.sqrt((rot_mat[i,i] + 1) / 2) for i in range(3)])
-    return so3_hat(w)
+    w = np.zeros(3)
+    # check which case will apply for axis
+    index = np.argmax(np.abs([rot_mat[0,0]+1, rot_mat[1,1]+1, rot_mat[2,2]+1]))
+    w[index] = np.sqrt((rot_mat[index,index] + 1) / 2)
+    w[(index + 1) % 3] = rot_mat[index, (index + 1) % 3] / (2 * w[index])
+    w[(index + 2) % 3] = rot_mat[index, (index + 2) % 3] / (2 * w[index])
+    return so3_hat(w) * np.pi
   
   # Compute the skew-symmetric matrix
   omega_skew = (rot_mat - rot_mat.T)/(2*np.sin(theta))
@@ -130,20 +134,32 @@ def so3_vee(omega_hat : np.ndarray) -> np.ndarray:
 
 def matrix_se3_exp(twist : np.ndarray) -> np.ndarray:
   """
-  Computes the matrix exponential of a twist in se(3).
+  Computes the matrix exponential of a twist (S * θ) in se(3) .
 
   Args:
-    twist: A NumPy array representing the 6x1 twist vector in se(3).
+    twist: A NumPy array representing the 6x1 twist vector in se(3) of shape [wx wy wz vx vy vz].T 
 
   Returns:
     A NumPy array representing the 4x4 transformation matrix.
   """
 
-  # Extract the angular velocity and linear velocity
-  omega = twist[:3]
-  v = twist[3:]
+  se3_mat = np.eye(4)
 
-  pass
+  # Extract the angular and linear velocities
+  angle = np.sqrt(twist[0]**2 + twist[1]**2 + twist[2]**2)
+
+  if np.isclose(angle, 0):
+    se3_mat[:3,3] = twist[3:]
+    return se3_mat
+  
+  omega_skew = so3_hat(twist[:3]) / angle  
+  p = (np.eye(3) * angle + (1 - np.cos(angle)) * omega_skew + (angle - np.sin(angle)) * omega_skew @ omega_skew) @ (twist[3:] / angle)
+  se3_mat[:3,:3] = matrix_so3_exp(twist[:3])
+  se3_mat[:3,3] = p
+  return se3_mat
+  
+
+
 
 # Method to compute the matrix logarithm for SE(3)
 
@@ -157,16 +173,75 @@ def matrix_se3_logarithm(trans_mat : np.ndarray) -> np.ndarray:
   Returns:
     A NumPy array representing the 4x4 matrix logarithm.
   """
+
+  se3_log_mat = np.zeros((4,4))
   omega_skew = matrix_so3_logarithm(trans_mat[:3,:3])
   p = trans_mat[:3,3]
   omega = so3_vee(omega_skew)
-  angle = np.sqrt(omega[0]**2 + omega[1]**2 + omega[2]**2)
-  inv_mat = np.eye(3)/angle - 0.5 * omega_skew + (1/angle - 1 / (2 * np.tan(angle/2))) * omega_skew @ omega_skew
+  angle = np.sqrt(omega[0]**2 + omega[1]**2 + omega[2]**2) 
+
+  if np.isclose(angle, 0):
+    se3_log_mat[:3,3] = p
+    return se3_log_mat
+  
+  omega_skew = omega_skew / angle
+  inv_mat = np.eye(3)/angle - (0.5 * omega_skew ) + ((1/angle - 1 / (2 * np.tan(angle/2))) * omega_skew @ omega_skew )
   v = inv_mat @ p
-  se3_log_mat = np.zeros((4,4))
-  se3_log_mat[:3,:3] = omega_skew 
-  se3_log_mat[:3,3] = v
-  return se3_log_mat * angle
+ 
+  se3_log_mat[:3,:3] = omega_skew * angle
+  se3_log_mat[:3,3] = v * angle 
+  return se3_log_mat
+
+
+def matrix_se3log_split(se3_log_mat : np.ndarray) -> tuple[np.ndarray, np.float64]:
+  """
+  Splits the matrix logarithm of a transformation matrix into the normalized twist and scalar angle.
+
+  Args:
+    se3_log_mat: A NumPy array representing the 4x4 matrix logarithm.
+
+  Returns:
+    A tuple with 1 NumPy array and 1 scalar representing the 4x4 normalized twist / screw and the scalar angle
+  """
+  omega_skew = se3_log_mat[:3,:3]
+  v = se3_log_mat[:3,3]
+  omega = so3_vee(omega_skew)
+  angle = np.sqrt(omega[0]**2 + omega[1]**2 + omega[2]**2)
+  if np.isclose(angle, 0):
+    norm = np.sqrt(v[0]**2 + v[1]**2 + v[2]**2)
+    return se3_log_mat/ norm, norm
+  return se3_log_mat / angle, angle
+
+
+def matrix_se3_twist2screw(twist : np.ndarray) -> tuple[np.ndarray, np.ndarray, np.float64, np.float64]:
+  """
+  Splits a 6x1 twist vector of a transformation matrix logarithm to a q,s,h screw axis and a scalar angle.
+
+  Args:
+    twist: A NumPy array representing the 6x1 twist vector in se(3).
+
+  Returns:
+    A tuple with 2 NumPy arrays and 2 scalar representing the screw axis (q_point , s_axis, h_pitch, theta)
+  """
+  se3_log_mat, angle  = matrix_se3log_split(se3_hat(twist))
+  omega_skew = se3_log_mat[:3,:3]
+  v = se3_log_mat[:3,3]
+  omega = so3_vee(omega_skew)
+  omega_mag = np.sqrt(omega[0]**2 + omega[1]**2 + omega[2]**2)
+
+  if np.isclose(omega_mag, 0):
+    # If there is no rotation, only translation
+    norm = angle
+    q_point = np.array([0,0,0])
+    s_axis = v
+    h_pitch = np.inf
+    return q_point, s_axis, h_pitch, norm
+  
+  q_point = omega_skew @ v
+  s_axis = omega
+  h_pitch = np.dot(s_axis, v)
+  return q_point, s_axis, h_pitch, angle
+
 
 # Method to compute the hat operator of a vector in se(3)
 def se3_hat(twist : np.ndarray) -> np.ndarray:
@@ -242,3 +317,23 @@ def inverse_SE3(se3mat : np.ndarray) -> np.ndarray:
   inv_se3mat[:3,:3] = se3mat[:3,:3].T
   inv_se3mat[:3,3] = -se3mat[:3,:3].T @ se3mat[:3,3]
   return inv_se3mat
+
+
+# Method to generate an adjoint from an element of the Lie group SE(3)
+
+def adjoint_SE3(se3mat : np.ndarray) -> np.ndarray:
+  """
+  Computes the adjoint of an element of the Lie group SE(3).
+  
+  Args:
+    se3mat: A NumPy array representing the 4x4 element of the Lie group SE(3).
+
+  Returns:
+    A NumPy array representing the 6x6 adjoint of the element of the Lie group SE(3).
+  """
+  adjoint = np.zeros((6,6))
+  adjoint[:3,:3] = se3mat[:3,:3]
+  adjoint[3:,3:] = se3mat[:3,:3]
+  adjoint[3:,:3] = so3_hat(se3mat[:3,3]) @ se3mat[:3,:3]
+
+  return adjoint
