@@ -36,6 +36,8 @@ def frame_generator(input_visualizer : meshcat.Visualizer, input_frame_name : st
     input_visualizer[f"{input_frame_name}/y_axis"].set_transform(input_frame_transform @ Ry)
     input_visualizer[f"{input_frame_name}/z_axis"].set_transform(input_frame_transform @ Rz)
 
+    return input_visualizer
+
 
 
 def vector_generator(input_visualizer : meshcat.Visualizer, position1 : np.ndarray, position2 : np.ndarray, name_space : str = "vectors"):
@@ -49,7 +51,7 @@ def vector_generator(input_visualizer : meshcat.Visualizer, position1 : np.ndarr
         return input_visualizer
     
     radius = 0.02
-    Translate = tf.translation_matrix([0,length/2,0])
+    Translate = element_SE3([0,0,0],[0,length/2,0])
 
     y_cylinder = g.Cylinder(length, radius)
 
